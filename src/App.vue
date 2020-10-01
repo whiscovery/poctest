@@ -1,32 +1,37 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app>
+    <v-navigation-drawer app>
+      <h2>navi</h2>
+    </v-navigation-drawer>
+
+    <v-app-bar app>
+      <MenuComponent></MenuComponent>
+    </v-app-bar>
+
+    <v-main>
+      <v-container fluid>
+        <router-view> </router-view>
+      </v-container>
+    </v-main>
+    <v-footer>
+      <h2>footer</h2>
+    </v-footer>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import MenuComponent from "@/components/Menu.vue"
 
-#nav {
-  padding: 30px;
+export default {
+  name: "App",
+  components: {
+    MenuComponent
+  },
+  data: () => ({
+    drawer: null
+  }),
+  props: {
+    soucre: String
+  }
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+</script>
