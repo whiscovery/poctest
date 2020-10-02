@@ -1,16 +1,18 @@
 <template>
   <v-container>
-    <SpeakersComponent :speakersInfo="speakersInfo"></SpeakersComponent>
+    <SpeakersByRankComponent
+      :speakersInfo="speakersInfo"
+    ></SpeakersByRankComponent>
   </v-container>
 </template>
 
 <script>
-import SpeakersComponent from "@/components/Speakers.vue"
+import SpeakersByRankComponent from "@/components/SpeakersByRank.vue"
 import axios from "axios"
 
 export default {
   components: {
-    SpeakersComponent
+    SpeakersByRankComponent
   },
   data() {
     return {

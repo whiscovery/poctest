@@ -1,6 +1,8 @@
 <template>
   <v-container>
-    <h1>{{ printSpeakers }}</h1>
+    <div v-for="(speakers, index) in speakersInfo" :key="index">
+      {{ speakers.name }}
+    </div>
   </v-container>
 </template>
 
@@ -13,10 +15,9 @@ export default {
     }
   },
   methods: {
-    printSpeakers() {
-      this.speakerName = this.speakersInfo.name
-      return this.speakerName
-    }
+    // printSpeakers() {
+    //   this.speakerName = this.speakersInfo
+    // }
   }
 }
 </script>
