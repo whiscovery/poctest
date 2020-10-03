@@ -1,13 +1,13 @@
 <template>
-  <v-app>
-    <h1>
+  <div>
+    <div>
       <p class="text-center">
-        <img src="#" />
+        <img src="./assets/top2.png" />
       </p>
-    </h1>
-    <v-app-bar app>
+    </div>
+    <div>
       <MenuComponent></MenuComponent>
-    </v-app-bar>
+    </div>
 
     <div class="jumbotron">
       <router-view> </router-view>
@@ -15,7 +15,7 @@
     <!-- <v-footer>
       <h2>footer</h2>
     </v-footer> -->
-  </v-app>
+  </div>
 </template>
 
 <script>
