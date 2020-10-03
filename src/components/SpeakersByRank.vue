@@ -6,7 +6,7 @@
         :key="index"
         class="p-2 mr-auto justify-content-center bd-hightlight"
       >
-        <div v-if="show">
+        <div v-if="checkDub(speakers, index)">
           <div class="card" style="width: 240px">
             <div class="img-box text-center">
               <img src="" width="212" />
@@ -27,7 +27,10 @@ export default {
       i: null,
       show: true,
       speakersInfo: [],
-      speakers: []
+      speakers: [],
+      index: null,
+      tempList: {},
+      tempName: null
     }
   },
   created() {
@@ -54,7 +57,15 @@ export default {
           // always executed
         })
     },
-    numberOfSpeech() {}
+    checkDub(tempList, index) {
+      if ((index >= 1) & (tempList["name"] == this.tempName)) {
+        this.tempName = tempList["name"]
+        return false
+      } else {
+        this.tempName = tempList["name"]
+        return true
+      }
+    }
     // makeNewArray() {
     //   for (i = 0; i < this.speakersInfo.length - 1; i++) {
     //     if (this.speakersInfo[i]["name"] == this.speakersInfo[i + 1]["name"]) {
