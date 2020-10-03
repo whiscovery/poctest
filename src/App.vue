@@ -1,21 +1,20 @@
 <template>
   <v-app>
-    <v-navigation-drawer app>
-      <h2>navi</h2>
-    </v-navigation-drawer>
-
+    <h1>
+      <p class="text-center">
+        <img src="#" />
+      </p>
+    </h1>
     <v-app-bar app>
       <MenuComponent></MenuComponent>
     </v-app-bar>
 
-    <v-main>
-      <v-container fluid>
-        <router-view> </router-view>
-      </v-container>
-    </v-main>
-    <v-footer>
+    <div class="jumbotron">
+      <router-view> </router-view>
+    </div>
+    <!-- <v-footer>
       <h2>footer</h2>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
