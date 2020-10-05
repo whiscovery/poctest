@@ -7,12 +7,12 @@
           class="p-2 mr-auto justify-content-center bd-hightlight"
           :key="index"
         >
-          <div class="shadow-lg pa-3 mb-5 bg-dark rounded">
+          <div class="shadow-lg p-3 mb-5 bg-dark rounded">
             <div class="card" style="width: 240px;">
               <div class="img-box text-center">
                 <div class="img-back"></div>
                 <div class="img-front1">
-                  <img :src="checkRibbon(speakers.multispeech)" width="212" />
+                  <img :src="checkRibbon(speakers.multispeech)" width="240" />
                 </div>
               </div>
               <div class="card-body">
