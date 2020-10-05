@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Thanks to Speakers</title>
+    <!-- CSS only -->
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.css">
+
+    <!-- Script only -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script>
+    		// url에서 파라미터 읽어 정렬 순서 정하기 ~.htm?sortby=name&sortorder=asc
+    function getUrlParams() {
+    	var params = {};
+    	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+    	return params;
+	}
+	
+   	// 로딩 전 로딩중 삽입 함수
+    function LoadingWithMask() {
+	    // 화면 높이, 너비 추출
+	    var maskHeight = $(document).height();
+	    var maskWidth  = window.document.body.clientWidth;
+	     
+	    // 화면 출력 마스크 설정
+	    var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+	    var loadingImg ='';
+	      
+	    loadingImg +="<div id='loadingImg'>";
+	    loadingImg +=" <img src='./img/loadingPacman2.gif' style='position: relative; display: block; margin: 0px auto;'/>";
+	    loadingImg +="</div>"; 
+	  
+	    // 화면에 레이어 추가
+	    $('body')
+	        .append(mask)
+	        .append(loadingImg)
+	        
+	    // 마스크의 높이와 너비를 이용해 전체 화면 채움
+	    $('#mask').css({
+	            'width' : maskWidth
+	            ,'height': maskHeight
+	            ,'opacity' :'0.6'
+	    });
+	  
+	    //마스크 표시
+	    $('#mask').show();  
+	  
+	    //로딩 중 이미지 표시
+	    $('#loadingImg').show();
+    }
+
+    // 로딩중 이미지 삭제: 로딩 끝나면 호출할 함수
+    function closeLoadingWithMask() {
+      	$('#mask, #loadingImg').hide();
+      	$('#mask, #loadingImg').remove();  
+    }
+    
+  
+</script>
+ </head>
+
+ <body>
+	 <h1>
+	    <p class="text-center">
+	      <img src="./img/top2.png">
+	    </p>
+	 </h1>
+
+
+<div class="container-fluid">
+	<nav aria-label="breadcrumb">
+  <ol class="breadcrumb"><li class="breadcrumb-item">Sort: </li>
+  	<li class="breadcrumb-item"><a href="./complete1.htm?sortby=speech&order=asc">Number of speech</a></li>
+    <li class="breadcrumb-item"><a href="./complete1.htm?sortby=name&sortorder=asc">Name(A-Z)</a></li>
+    <li class="breadcrumb-item"><a href="./complete1.htm?sortby=name&sortorder=desc">Name(Z-A)</a></li>
+    <li class="breadcrumb-item"><a href="./complete1.htm?sortby=year&sortorder=asc">Year(2006-2019)</a></li>
+    <li class="breadcrumb-item"><a href="./complete1.htm?sortby=year&sortorder=desc">Year(2019-2006)</a></li>
+    
+  </ol>
+</nav>
+
+    <!-- Line 1 -->
+    <div class="jumbotron">
+
+      <div class="d-flex justify-content-center flex-wrap" id="speakers">
+      <!-- 여기에 스크립트 처리된 내용 삽입됨 id = speakers -->  
+      </div>
+      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+     
+    </div>
+    <!-- Line 1 End -->
+</div>
+
+<script>
+	var speakerArr = []; // 구글 시트 내용을 새로 dictionary로 만듬
+
+	// 구글 스프레드시트
+	$(document).ready(function() {
+
+	     jQuery.ajax({
+	           url: 'https://spreadsheets.google.com/feeds/list/1YBrrhjom5WBQmQ2Sn3DXuCgE4JkFdkX66xqOo0Hgl8o/1/public/basic?alt=json-in-script&callback=?',
+	           type: 'POST',
+	           dataType: "JSON",
+	           success : function(data) {
+	           		LoadingWithMask();
+	           		setTimeout(function() {
+			        	startWebPage(data);
+			    	}, 300);
+			        closeLoadingWithMask();	            
+			       
+	           },
+	           complete : function(data) {
+	           
+	           	 },
+	           error : function(xhr, status, error) {
+	             console.log("Error");
+
+	           }
+
+	     });
+
+	});
+
+	function startWebPage(data){
+		var oParams = getUrlParams(); // url 파라미터를 받아옴
+	           		
+	           		sortby = oParams.sortby; // 파라미터의 sortby 값
+	           		sortorder = oParams.sortorder; // 파라미터의 sortorder 값
+	           		if (sortby == undefined) {
+						sortby = "speech";
+					}
+					parsinggoogledata(data); // 구글에서 받아온 값을 사전 형태로 파싱	           	
+		           	sortJSON(speakerArr, sortby , sortorder, sortby); // 사전 형태의 값 sort
+			        printSpeakers(speakerArr, sortby); // 함수 호출
+	}
+
+	function parsinggoogledata(data){
+		
+        var entry=data.feed.entry;//구글 스프레드 시트의 모든 내용은 feed.entry에 담겨있습니다.
+
+		for(var i in entry){ // 각 행에대해 아래 스크립트를 실행합니다.
+			var dict = {};		//사전 형식으로
+			var contents;		
+			var year, multispeech, title, summary, name;
+			name = entry[i].title.$t;		// name은 바로 받아올 수 있음
+			contents = entry[i].content.$t.split(",");	
+			// content에 내용들이 함께 있으므로 잘라줘야함
+			year = contents[0].split(":")[1].trim();
+			multispeech = contents[1].split(":")[1].trim();
+			title = contents[2].split(":")[1].trim();
+			summary = contents[3];
+
+			dict["name"] = name;
+			dict["year"] = year;
+			dict["multispeech"] = String(multispeech);
+			dict["title"] = title;
+			dict["summary"] = summary;
+			dict["image"] = "";
+			
+			speakerArr.push(dict);	// 필요한 내용 사전 형식으로 speakerArr에 삽입
+		} 
+	};
+
+	
+	// sort 함수
+	var sortJSON = function(data, key, type, sortby) {
+		if (type == undefined) {
+			type = "asc";
+		}
+		if(sortby == "speech"){
+			return data.sort(function(a, b) {
+			var x = a[key];		// 이름에서 소문자인경우를 위해 대문자로 변환
+			var y = b[key];
+			if (type == "desc") {
+		  		return x > y ? -1 : x < y ? 1 : 0;
+			} else if (type == "asc") {
+		  		return x < y ? -1 : x > y ? 1 : 0;
+			}
+		});
+
+		}else{
+			return data.sort(function(a, b) {
+			var x = a[key].toUpperCase();		// 이름에서 소문자인경우를 위해 대문자로 변환
+			var y = b[key].toUpperCase();
+			if (type == "desc") {
+		  		return x > y ? -1 : x < y ? 1 : 0;
+			} else if (type == "asc") {
+		  		return x < y ? -1 : x > y ? 1 : 0;
+			}
+		});
+
+		}
+		
+	};
+
+
+	// 파일이 있는지 여부 체크파일 존재 여부 확인(발표자 사진업로드시 발표자 이름으로 업로드(공백 제거)
+	// function doesFileExist(urlToFile)   // 
+	// {
+	  	// var file = urlToFile;
+	  	// var checkvalue;
+	  	// $.ajax({
+	     	// url: file,
+	     	// type: 'HEAD',
+	     	// async : false,
+	     	// success: function () {
+	          	// checkvalue = 1;
+	     	// },
+	     	// error: function () {
+	          	// checkvalue = 0;
+	    	// }
+	  	// });
+	  	// return checkvalue;
+	// }
+
+	// 화면에 출력
+	function printSpeakers(arr, sortby){  
+		
+        var out = "";        // 화면에 쓸 내용
+        var medal = ""; // 메달변수
+
+        //사진 설정
+        for (var i = 0; i < arr.length; i++) {	          
+            if (arr[i]["image"] == ""){     // 212 x 192 크기 사진
+          	  	var speakername = arr[i]["name"].replace(/(\s*)/g, ""); // name에서 공백 전부 제거
+            	var speakerimage = "./img/speaker/"+ speakername + ".png"; // 공백제거된 name을 사진이름으로
+            	arr[i]["image"] = speakerimage; // 사진파일을 이미지로
+            // if(doesFileExist(speakerimage) == 1){ // 동일 이름의 사진파일이 있다면
+            	// 
+              	// arr[i]["image"] = speakerimage; // 사진파일을 이미지로
+            // }else{
+              	// arr[i]["image"] = "./img/speaker/hacker.png"; //없다면 일반 해커 이미지로
+              	// 
+            // }
+            
+          }
+
+          // 리본 설정
+          medal = "./img/speakerRibon_bronze.png"; //리본은 동메달을 기본으로	
+          if (arr[i]["multispeech"] >=5){		// 발표횟수에 따라 리본 다르게 설정
+          	medal = "./img/speakerRibon_diamond_gold.png";
+          }else if(arr[i]["multispeech"] == 4){
+          	medal = "./img/speakerRibon_diamond_silver.png";
+          }else if(arr[i]["multispeech"] == 3){
+            medal = "./img/speakerRibon_gold.png";
+          }else if(arr[i]["multispeech"] == 2){
+            medal = "./img/speakerRibon_silver.png";
+          }else{
+            medal = "./img/speakerRibon_bronze.png";
+          }
+
+          // 이름 중복 처리
+          if(i < arr.length -1){
+            if (arr[i]["name"] == arr[i+1]["name"]){
+              continue;
+            }
+          }
+          
+          // 첫 시작일 때 카드 삽입
+          if(sortby == "year"){         // year로 분류할 때 첫 카드 삽입 	
+            if (i == 0){
+            	 out+=
+              "<!-- Line -->" +
+              "<div class=\"p-2 mr-auto justify-content-center bd-highlight\">" +
+              "  <div class=\"shadow-lg p-3 mb-5 bg-dark rounded\">" +
+              "    <div class=\"card\" style=\"width: 240px;\">" +
+              "      <div class=\"img-box text-center\">" +
+              "        <div class=\"img-back\">" +
+              "			<h1>" + arr[i]["year"] + "</h1>" +
+              "          </div>" +
+              "          <div class=\"img-front1\">" +
+             
+              "          </div>" +
+              "        </div>" +
+              "        <div class=\"card-body\">" +
+              "          <h5 class=\"card-title\"> </h5>" +
+             
+              
+              "       </div>" +
+              "      </div>" +
+              "  </div>" +
+              " </div>";
+            }
+          }else if(sortby == "name"){         // year로 분류할 때 첫 카드 삽입 	
+            if (i == 0){
+            	 out+=
+              "<!-- Line -->" +
+              "<div class=\"p-2 mr-auto justify-content-center bd-highlight\">" +
+              "  <div class=\"shadow-lg p-3 mb-5 bg-card rounded\">" +
+              "    <div class=\"card\" style=\"width: 240px;\">" +
+              "      <div class=\"img-box text-center\">" +
+              "        <div class=\"img-back\">" +
+              "			<h1>" + arr[i]["name"][0] + "</h1>" +
+              "          </div>" +
+              "          <div class=\"img-front1\">" +
+              
+              "          </div>" +
+              "        </div>" +
+              "        <div class=\"card-body\">" +
+              "          <h5 class=\"card-title\"> </h5>" +
+              "       </div>" +
+              "      </div>" +
+              "  </div>" +
+              " </div>";
+            }
+          }else if(sortby == "speech"){
+
+          }else{
+          	console.log("Error");
+          }
+          
+
+
+          out+=
+              "<!-- Line -->" +
+              "<div class=\"p-2 mr-auto justify-content-center bd-highlight\">" +
+              "  <div class=\"shadow-lg p-3 mb-5 bg-dark rounded\">" +
+              "    <div class=\"card\" style=\"width: 240px;\">" +
+              "      <div class=\"img-box text-center\">" +
+              "        <div class=\"img-back\">" +
+              "            <img src=\"" + arr[i]["image"]  +"\" class=\"rounded-circle\" alt=\"...\" width=\"212\">" +
+              "          </div>" +
+              "          <div class=\"img-front1\">" +
+              "            <img src=\"" + medal  +"\" width=\"240\">" +
+              "          </div>" +
+              "        </div>" +
+              "        <div class=\"card-body\">" +
+              "          <h5 class=\"card-title\"> " + arr[i]["name"] + "</h5>" +
+              "          <h6 class=\"card-subtitle mb-2 text-muted\"></h6>" +
+              "          <p class=\"card-text text-left\">" +  "<br />"; 
+              
+             // 같은 이름이 몇번 있는지로 발표 횟수 체크해서 횟수만큼 year 출력 
+            let res = arr.filter(it => it["name"] == arr[i]["name"]);
+            for (var j =0;  j < res.length; j++){
+               out += 
+               "          <span class=\"badge badge-success\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"aaaaa\">POC" +
+               res[j]["year"] +
+               "</span> "+
+               "\""+ res[j]["title"] + "\"<br >";
+            }
+            out+=
+              "</p>" +
+              "       </div>" +
+              "      </div>" +
+              "  </div>" +
+              " </div>";
+
+              // 추가 카드 삽입
+          if(sortby == "year"){
+          	if(i < arr.length -1){
+	            if (arr[i]["year"] != arr[i+1]["year"]){
+	              out+=	              
+	              "<!-- Line -->" +
+	              "<div class=\"p-2 mr-auto justify-content-center bd-highlight\">" +
+	              "  <div class=\"shadow-lg p-3 mb-5 bg-dark rounded\">" +
+	              "    <div class=\"card\" style=\"width: 240px;\">" +
+	              "      <div class=\"img-box text-center\">" +
+	              "        <div class=\"img-back\">" +
+	              "			<h1>" + arr[i+1]["year"] + "</h1>" +
+	              "          </div>" +
+	              "          <div class=\"img-front1\">" +
+	             
+	              "          </div>" +
+	              "        </div>" +
+	              "        <div class=\"card-body\">" +
+	              "          <h5 class=\"card-title\"> </h5>" +
+	             
+	              
+	              "       </div>" +
+	              "      </div>" +
+	              "  </div>" +
+	              " </div>";
+	          	}
+          	}
+          };
+          if(sortby == "name"){
+          	if(i < arr.length -1){
+	            if (arr[i]["name"][0].toUpperCase() != arr[i+1]["name"][0].toUpperCase()){
+	              out+=
+	              "<!-- Line -->" +
+	              "<div class=\"p-2 mr-auto justify-content-center bd-highlight\">" +
+	              "  <div class=\"shadow-lg p-3 mb-5 bg-dark rounded\">" +
+	              "    <div class=\"card\" style=\"width: 240px;\">" +
+	              "      <div class=\"img-box text-center\">" +
+	              "        <div class=\"img-back\">" +
+	             "			<h1>" + arr[i+1]["name"][0] + "</h1>" +
+	              "          </div>" +
+	              "          <div class=\"img-front1\">" +
+	             
+	              "          </div>" +
+	              "        </div>" +
+	              "        <div class=\"card-body\">" +
+	              "          <h5 class=\"card-title\"> </h5>" +
+	              "       </div>" +
+	              "      </div>" +
+	              "  </div>" +
+	              " </div>";
+	          	}
+          	}
+          };
+         // 화면 그리기
+        document.getElementById('speakers').innerHTML = out;
+
+        }
+	}
+
+
+</script>
+</body>
+</html>

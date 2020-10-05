@@ -1,20 +1,28 @@
 <template>
   <v-container>
-    <div class="d-flex justify-content-center flex-wrap" id="speakers">
-      <div
-        v-for="(speakers, index) in speakersInfo"
-        :key="index"
-        class="p-2 mr-auto justify-content-center bd-hightlight"
-      >
-        <div v-if="checkDub(speakers, index)">
-          <div class="card" style="width: 240px">
-            <div class="img-box text-center">
-              <img src="" width="212" />
+    <div class="d-flex justify-content-center flex-wrap">
+      <template v-for="(speakers, index) in speakersInfo">
+        <div
+          v-if="checkDubName(speakers.name, index)"
+          class="p-2 mr-auto justify-content-center bd-hightlight"
+          :key="index"
+        >
+          <div class="shadow-lg p-3 mb-5 bg-dark rounded">
+            <div class="card" style="width: 240px;">
+              <div class="img-box text-center">
+                <div class="img-back"></div>
+                <div class="img-front1">
+                  <img :src="checkRibbon(speakers.multispeech)" width="212"/>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ speakers.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted"></h6>
+              </div>
             </div>
-            {{ speakers.name }}
           </div>
         </div>
-      </div>
+      </template>
     </div>
   </v-container>
 </template>
@@ -28,9 +36,7 @@ export default {
       show: true,
       speakersInfo: [],
       speakers: [],
-      index: null,
-      tempList: {},
-      tempName: null
+      index: null
     }
   },
   created() {
@@ -57,22 +63,36 @@ export default {
           // always executed
         })
     },
-    checkDub(tempList, index) {
-      if ((index >= 1) & (tempList["name"] == this.tempName)) {
-        this.tempName = tempList["name"]
-        return false
+    checkDubName(checkingname, i) {
+      //이름 중복되면 안보이게 하기 위해 v-if에 return false
+      if (i >= 1) {
+        if (checkingname != this.speakersInfo[i - 1].name) {
+          return true
+          //console.log("True : " + checkingname + " VS " + this.speakersInfo[i-1].name)
+        } else {
+          return false
+          //console.log("False : " + checkingname + " VS " + this.speakersInfo[i-1].name)
+        }
       } else {
-        this.tempName = tempList["name"]
         return true
       }
+    },
+    checkRibbon(multispeech) {
+      let medal = "@/assets/img/medal/speakerRibon_bronze.png" //리본은 동메달을 기본으로
+      if (multispeech >= 5) {
+        // 발표횟수에 따라 리본 다르게 설정
+        medal = "/img/medal/speakerRibon_diamond_gold.png"
+      } else if (multispeech == 4) {
+        medal = "@/assets/img/medal/speakerRibon_diamond_silver.png"
+      } else if (multispeech == 3) {
+        medal = "@/assets/img/medal/speakerRibon_gold.png"
+      } else if (multispeech == 2) {
+        medal = "@/assets/img/medal/speakerRibon_silver.png"
+      } else {
+        medal = "@/assets/img/medal/speakerRibon_bronze.png"
+      }
+      return medal
     }
-    // makeNewArray() {
-    //   for (i = 0; i < this.speakersInfo.length - 1; i++) {
-    //     if (this.speakersInfo[i]["name"] == this.speakersInfo[i + 1]["name"]) {
-    //       this.speakers.push(this.speakersInfo[i])
-    //     }
-    //   }
-    // }
   }
 }
 </script>

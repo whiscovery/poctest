@@ -3,7 +3,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Sort:</li>
       <li class="breadcrumb-item">
-        <a href="./index.htm?sortby=speech&order=asc">Number of speech</a>
+        <router-link :to="{ name: 'speaker' }">Number of speech</router-link>
       </li>
       <li class="breadcrumb-item">
         <a href="./index.htm?sortby=name&sortorder=asc">Name(A-Z)</a>
