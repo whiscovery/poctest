@@ -10,7 +10,9 @@
           <div class="shadow-lg p-3 mb-5 bg-dark rounded">
             <div class="card" style="width: 240px;">
               <div class="img-box text-center">
-                <div class="img-back"></div>
+                <div class="img-back">
+                  <img :src="setPhoto(speakers.name)" width="212" />
+                </div>
                 <div class="img-front1">
                   <img :src="checkRibbon(speakers.multispeech)" width="240" />
                 </div>
@@ -92,6 +94,9 @@ export default {
         medal = "@/assets/img/medal/speakerRibon_bronze.png"
       }
       return medal
+    },
+    setPhoto(name){
+
     }
   }
 }
