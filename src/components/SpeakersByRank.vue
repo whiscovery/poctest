@@ -7,12 +7,12 @@
           class="p-2 mr-auto justify-content-center bd-hightlight"
           :key="index"
         >
-          <div class="shadow-lg p-3 mb-5 bg-dark rounded">
+          <div class="shadow-lg pa-3 mb-5 bg-dark rounded">
             <div class="card" style="width: 240px;">
               <div class="img-box text-center">
                 <div class="img-back"></div>
                 <div class="img-front1">
-                  <img :src="checkRibbon(speakers.multispeech)" width="212"/>
+                  <img :src="checkRibbon(speakers.multispeech)" width="212" />
                 </div>
               </div>
               <div class="card-body">
@@ -81,7 +81,7 @@ export default {
       let medal = "@/assets/img/medal/speakerRibon_bronze.png" //리본은 동메달을 기본으로
       if (multispeech >= 5) {
         // 발표횟수에 따라 리본 다르게 설정
-        medal = "/img/medal/speakerRibon_diamond_gold.png"
+        medal = "./img/medal/speakerRibon_diamond_gold.png"
       } else if (multispeech == 4) {
         medal = "@/assets/img/medal/speakerRibon_diamond_silver.png"
       } else if (multispeech == 3) {
