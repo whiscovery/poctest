@@ -7,11 +7,15 @@
           class="p-2 mr-auto justify-content-center bd-hightlight"
           :key="index"
         >
-          <div class="shadow-lg p-3 mb-5 bg-dark rounded">
+          <div class="shadow-lg p-2 mb-5 bg-dark rounded">
             <div class="card" style="width: 240px;">
               <div class="img-box text-center">
                 <div class="img-back">
-                  <img :src="setPhoto(speakers.name)" width="212" />
+                  <img
+                    :src="setPhoto(speakers.name)"
+                    class="rounded-circle"
+                    width="212"
+                  />
                 </div>
                 <div class="img-front1">
                   <img :src="checkRibbon(speakers.multispeech)" width="240" />
@@ -20,6 +24,15 @@
               <div class="card-body">
                 <h5 class="card-title">{{ speakers.name }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted"></h6>
+                <p class="card-text text-left"><br />
+                  <template v-for="item in checkSpeech(speakers.name)">
+                    <div :key="item.year">
+                      <span class="badge badge-success">POC{{ item.year }}</span
+                      >{{ item.title }}
+                      <br />
+                    </div>
+                  </template>
+                </p>
               </div>
             </div>
           </div>
@@ -85,18 +98,25 @@ export default {
         // 발표횟수에 따라 리본 다르게 설정
         medal = "./img/medal/speakerRibon_diamond_gold.png"
       } else if (multispeech == 4) {
-        medal = "@/assets/img/medal/speakerRibon_diamond_silver.png"
+        medal = "./img/medal/speakerRibon_diamond_silver.png"
       } else if (multispeech == 3) {
-        medal = "@/assets/img/medal/speakerRibon_gold.png"
+        medal = "./img/medal/speakerRibon_gold.png"
       } else if (multispeech == 2) {
-        medal = "@/assets/img/medal/speakerRibon_silver.png"
+        medal = "./img/medal/speakerRibon_silver.png"
       } else {
-        medal = "@/assets/img/medal/speakerRibon_bronze.png"
+        medal = "./img/medal/speakerRibon_bronze.png"
       }
       return medal
     },
-    setPhoto(name){
-
+    setPhoto(name) {
+      let nameimg = "./img/speakers/hacker.png"
+      name = name.replace(/(\s*)/g, "")
+      nameimg = "./img/speakers/" + name + ".png"
+      return nameimg
+    },
+    checkSpeech(name) {
+      let res = this.speakersInfo.filter(it => it["name"] == name)
+      return res
     }
   }
 }
