@@ -14,6 +14,12 @@ const routes = [
     name: "speaker",
     component: () =>
       import(/* webpackChunkName: "speakers" */ "../views/Speaker.vue")
+  },
+  {
+    path: "/sortbyname",
+    name: "sortbyname",
+    component: () =>
+      import(/* webpackChunkName: "sortbyname" */ "../views/SortByName.vue")
   }
 ]
 

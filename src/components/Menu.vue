@@ -6,7 +6,7 @@
         <router-link :to="{ name: 'speaker' }">Number of speech</router-link>
       </li>
       <li class="breadcrumb-item">
-        <a href="./index.htm?sortby=name&sortorder=asc">Name(A-Z)</a>
+        <router-link :to="{ name: 'sortbyname' }">Name(A-Z)</router-link>
       </li>
       <li class="breadcrumb-item">
         <a href="./index.htm?sortby=name&sortorder=desc">Name(Z-A)</a>

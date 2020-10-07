@@ -70,7 +70,6 @@ export default {
         .then(res => {
           // handle success
           this.speakersInfo = res.data.data
-          this.$store.commit(this.speakersInfo)
         })
         .catch(err => {
           // handle error
