@@ -24,7 +24,8 @@
               <div class="card-body">
                 <h5 class="card-title">{{ speakers.name }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted"></h6>
-                <p class="card-text text-left"><br />
+                <p class="card-text text-left">
+                  <br />
                   <template v-for="item in checkSpeech(speakers.name)">
                     <div :key="item.year">
                       <span class="badge badge-success">POC{{ item.year }}</span
@@ -93,7 +94,7 @@ export default {
       }
     },
     checkRibbon(multispeech) {
-      let medal = "@/assets/img/medal/speakerRibon_bronze.png" //리본은 동메달을 기본으로
+      let medal = "./img/medal/speakerRibon_bronze.png" //리본은 동메달을 기본으로
       if (multispeech >= 5) {
         // 발표횟수에 따라 리본 다르게 설정
         medal = "./img/medal/speakerRibon_diamond_gold.png"
