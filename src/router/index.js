@@ -5,21 +5,47 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/home",
+    path: "/",
     name: "home",
-    component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue")
+    component: () => import(/* webpackChunkName: "home" */ "../views/Speaker.vue")
+  },
+  // {
+  //   path: "/speaker",
+  //   name: "speaker",
+  //   component: () =>
+  //     import(/* webpackChunkName: "speakers" */ "../views/Speaker.vue")
+  // },
+  {
+    path: "/sortbynameasc",
+    name: "sortbynameasc",
+    component: () =>
+      import(
+        /* webpackChunkName: "sortbynameasc" */ "../views/SortByNameAsc.vue"
+      )
   },
   {
-    path: "/speaker",
-    name: "speaker",
+    path: "/sortbynamedesc",
+    name: "sortbynamedesc",
     component: () =>
-      import(/* webpackChunkName: "speakers" */ "../views/Speaker.vue")
+      import(
+        /* webpackChunkName: "sortbynamedesc" */ "../views/SortByNameDesc.vue"
+      )
   },
   {
-    path: "/sortbyname",
-    name: "sortbyname",
+    path: "/sortbyyearasc",
+    name: "sortbyyearasc",
     component: () =>
-      import(/* webpackChunkName: "sortbyname" */ "../views/SortByName.vue")
+      import(
+        /* webpackChunkName: "sortbyyearasc" */ "../views/SortByYearAsc.vue"
+      )
+  },
+  {
+    path: "/sortbyyeardesc",
+    name: "sortbyyeardesc",
+    component: () =>
+      import(
+        /* webpackChunkName: "sortbyyeardesc" */ "../views/SortByYearDesc.vue"
+      )
   }
 ]
 

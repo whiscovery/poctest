@@ -13,7 +13,6 @@ export default {
   },
   data() {
     return {
-      i: null,
       speakersInfo: []
     }
   }

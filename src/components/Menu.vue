@@ -3,19 +3,23 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Sort:</li>
       <li class="breadcrumb-item">
-        <router-link :to="{ name: 'speaker' }">Number of speech</router-link>
+        <router-link :to="{ name: 'home' }">Home</router-link>
       </li>
       <li class="breadcrumb-item">
-        <router-link :to="{ name: 'sortbyname' }">Name(A-Z)</router-link>
+        <router-link :to="{ name: 'sortbynameasc' }">Name(A-Z)</router-link>
       </li>
       <li class="breadcrumb-item">
-        <a href="./index.htm?sortby=name&sortorder=desc">Name(Z-A)</a>
+        <router-link :to="{ name: 'sortbynamedesc' }">Name(Z-A)</router-link>
       </li>
       <li class="breadcrumb-item">
-        <a href="./index.htm?sortby=year&sortorder=asc">Year(2006-2019)</a>
+        <router-link :to="{ name: 'sortbyyearasc' }"
+          >Year(2006-2019)</router-link
+        >
       </li>
       <li class="breadcrumb-item">
-        <a href="./index.htm?sortby=year&sortorder=desc">Year(2019-2006)</a>
+        <router-link :to="{ name: 'sortbyyeardesc' }"
+          >Year(2019-2006)</router-link
+        >
       </li>
     </ol>
   </nav>

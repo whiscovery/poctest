@@ -44,40 +44,29 @@
 </template>
 
 <script>
-import axios from "axios"
+import { mapGetters } from "vuex"
 export default {
   data() {
     return {
       i: null,
       show: true,
-      speakersInfo: [],
+      speakersInfo: this.$store.state.speakersInfo, //speakersInfo에 vuex의 state 정보 넣기
       speakers: [],
       index: null
     }
   },
-  created() {
-    this.loadSpeakers()
+  computed: {
+    ...mapGetters(["getSpeakersInfo"]) //vuex에서 불러오기
   },
-  // mounted() {
-  //   this.printSpeakers()
-  // },
+  mounted() {
+    this.sortSpeakers()
+    console.log(this.speakersInfo)
+  },
   methods: {
-    async loadSpeakers() {
-      await axios
-        .get(
-          "https://script.googleusercontent.com/macros/echo?user_content_key=JkcOfggJobXcP2YBrYDmVOshdXuQJbfRn0-XfdfZhVChBNWuHoXrqXg9kiAMWWj4cGsncd2PqRRugogEOMs-9iKSCiARl4Nrm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnOqxU5QC_nZgRkPHyeCNP-n4QIUB6fjPh83U0hwv1lFRVFgZq68P2O7iBaYhCunJ0JK7g-6hpKLuKFxq41JwiLj3YGXp3BxfjQ&lib=MXlEvNmo98u7JPl4wcD1WZM7W5hCA46zX"
-        )
-        .then(res => {
-          // handle success
-          this.speakersInfo = res.data.data
-        })
-        .catch(err => {
-          // handle error
-          console.log(err)
-        })
-        .then(() => {
-          // always executed
-        })
+    sortSpeakers() {
+      this.speakersInfo.sort((a, b) => {
+        return a.name > b.name ? -1 : a.name < b.name ? 1 : 0
+      })
     },
     checkDubName(checkingname, i) {
       //이름 중복되면 안보이게 하기 위해 v-if에 return false

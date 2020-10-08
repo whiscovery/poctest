@@ -5,9 +5,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    speakerInfo: []
+    speakersInfo: []
   },
-  mutations: {},
+  mutations: {
+    setSpeakersInfo: function(state, data) {
+      state.speakersInfo = data
+    }
+  },
+  getters: {
+    getSpeakersInfo: function(state) {
+      return state.speakersInfo
+    }
+  },
   actions: {},
   modules: {}
 })
