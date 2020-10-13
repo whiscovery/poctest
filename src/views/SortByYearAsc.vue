@@ -58,6 +58,11 @@ export default {
   computed: {
     ...mapGetters(["getSpeakersInfo"]) //vuex에서 불러오기
   },
+  created() {
+    if (this.speakersInfo.length === 0) {
+      this.$store.dispatch("getSpeakersData")
+    }
+  },
   mounted() {
     this.sortSpeakers()
   },

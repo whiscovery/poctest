@@ -1,9 +1,11 @@
 <template>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item">Sort:</li>
       <li class="breadcrumb-item">
         <router-link :to="{ name: 'home' }">Home</router-link>
+      </li>
+      <li class="breadcrumb-item">
+        <router-link :to="{ name: 'sortbyrank' }">Rank</router-link>
       </li>
       <li class="breadcrumb-item">
         <router-link :to="{ name: 'sortbynameasc' }">Name(A-Z)</router-link>

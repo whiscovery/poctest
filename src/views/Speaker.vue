@@ -1,15 +1,15 @@
 <template>
   <v-container>
-    <SpeakersByRankComponent></SpeakersByRankComponent>
+    <LoadingSpeakerComponent></LoadingSpeakerComponent>
   </v-container>
 </template>
 
 <script>
-import SpeakersByRankComponent from "@/components/SpeakersByRank.vue"
+import LoadingSpeakerComponent from "@/components/LoadingSpeaker.vue"
 
 export default {
   components: {
-    SpeakersByRankComponent
+    LoadingSpeakerComponent
   },
   data() {
     return {

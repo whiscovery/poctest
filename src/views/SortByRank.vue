@@ -58,13 +58,18 @@ export default {
   computed: {
     ...mapGetters(["getSpeakersInfo"]) //vuex에서 불러오기
   },
+  created() {
+    if (this.speakersInfo.length === 0) {
+      this.$store.dispatch("getSpeakersData")
+    }
+  },
   mounted() {
     this.sortSpeakers()
   },
   methods: {
     sortSpeakers() {
       this.speakersInfo.sort((a, b) => {
-        return a.name.toUpperCase() > b.name.toUpperCase() ? -1 : a.name.toUpperCase() < b.name.toUpperCase() ? 1 : 0
+        return b.multispeech - a.multispeech
       })
     },
     checkDubName(checkingname, i) {

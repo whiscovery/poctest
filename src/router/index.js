@@ -7,7 +7,8 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import(/* webpackChunkName: "home" */ "../views/Speaker.vue")
+    component: () =>
+      import(/* webpackChunkName: "home" */ "../views/Speaker.vue")
   },
   // {
   //   path: "/speaker",
@@ -22,6 +23,12 @@ const routes = [
       import(
         /* webpackChunkName: "sortbynameasc" */ "../views/SortByNameAsc.vue"
       )
+  },
+  {
+    path: "/sortbyrank",
+    name: "sortbyrank",
+    component: () =>
+      import(/* webpackChunkName: "sortbyrank" */ "../views/SortByRank.vue")
   },
   {
     path: "/sortbynamedesc",

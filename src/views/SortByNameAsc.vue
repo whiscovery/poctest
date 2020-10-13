@@ -60,12 +60,11 @@ export default {
   },
   mounted() {
     this.sortSpeakers()
-    console.log(this.speakersInfo)
   },
   methods: {
     sortSpeakers() {
       this.speakersInfo.sort((a, b) => {
-        return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+        return a.name.toUpperCase() < b.name.toUpperCase() ? -1 : a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0
       })
     },
     checkDubName(checkingname, i) {
