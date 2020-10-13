@@ -29,7 +29,7 @@
                   <template v-for="item in checkSpeech(speakers.name)">
                     <div :key="item.year">
                       <span class="badge badge-success">POC{{ item.year }}</span
-                      >{{ item.title }}
+                      > {{ item.title }}
                       <br />
                     </div>
                   </template>

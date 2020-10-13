@@ -1,12 +1,20 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
-
+import bus from "../utils/bus.js"
+import store from "@/store"
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: "/",
     name: "home",
+    // beforeEnter: (to, from, next) => {
+    //   bus.$emit("start:spinner")
+    //   store
+    //     .dispatch("getSpeakersData", to.name)
+    //     .then(() => next())
+    //     .catch(err => console.log(err))
+    // },
     component: () =>
       import(/* webpackChunkName: "home" */ "../views/Speaker.vue")
   },
@@ -27,6 +35,13 @@ const routes = [
   {
     path: "/sortbyrank",
     name: "sortbyrank",
+    beforeEnter: (to, from, next) => {
+      bus.$emit("start:spinner")
+      store
+        .dispatch("getSpeakersData", to.name)
+        .then(() => next())
+        .catch(err => console.log(err))
+    },
     component: () =>
       import(/* webpackChunkName: "sortbyrank" */ "../views/SortByRank.vue")
   },

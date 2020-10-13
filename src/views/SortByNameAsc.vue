@@ -29,7 +29,7 @@
                   <template v-for="item in checkSpeech(speakers.name)">
                     <div :key="item.year">
                       <span class="badge badge-success">POC{{ item.year }}</span
-                      >{{ item.title }}
+                      > {{ item.title }}
                       <br />
                     </div>
                   </template>
@@ -64,7 +64,11 @@ export default {
   methods: {
     sortSpeakers() {
       this.speakersInfo.sort((a, b) => {
-        return a.name.toUpperCase() < b.name.toUpperCase() ? -1 : a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0
+        return a.name.toUpperCase() < b.name.toUpperCase()
+          ? -1
+          : a.name.toUpperCase() > b.name.toUpperCase()
+          ? 1
+          : 0
       })
     },
     checkDubName(checkingname, i) {

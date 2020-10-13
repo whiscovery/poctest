@@ -29,7 +29,7 @@
                   <template v-for="item in checkSpeech(speakers.name)">
                     <div :key="item.year">
                       <span class="badge badge-success">POC{{ item.year }}</span
-                      >{{ item.title }}
+                      > {{ item.title }}
                       <br />
                     </div>
                   </template>
@@ -45,6 +45,7 @@
 
 <script>
 import { mapGetters } from "vuex"
+import ListMixin from "../utils/ListMixin.js"
 export default {
   data() {
     return {
@@ -55,6 +56,7 @@ export default {
       index: null
     }
   },
+  mixins: [ListMixin],
   computed: {
     ...mapGetters(["getSpeakersInfo"]) //vuex에서 불러오기
   },
