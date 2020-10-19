@@ -1,51 +1,65 @@
 <template>
   <v-container>
-    <div class="d-flex justify-content-center flex-wrap">
-      <div class="lds-facebook" v-if="loading">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-
-      <template v-for="(speakers, index) in speakersInfo">
-        <div
-          v-if="checkDubName(speakers.name, index)"
-          class="p-2 mr-auto justify-content-center bd-hightlight"
-          :key="index"
-        >
-          <div class="shadow-lg p-2 mb-5 bg-dark rounded">
-            <div class="card" style="width: 240px;">
-              <div class="img-box text-center">
-                <div class="img-back">
-                  <img
-                    :src="setPhoto(speakers.name)"
-                    class="rounded-circle"
-                    width="212"
-                  />
-                </div>
-                <div class="img-front1">
-                  <img :src="checkRibbon(speakers.multispeech)" width="240" />
-                </div>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">{{ speakers.name }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted"></h6>
-                <p class="card-text text-left">
-                  <br />
-                  <template v-for="item in checkSpeech(speakers.name)">
-                    <div :key="item.year">
-                      <span class="badge badge-success">POC{{ item.year }}</span
-                      > {{ item.title }}
-                      <br />
-                    </div>
-                  </template>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
+    <div class="text-center">
+      <v-sheet
+        color="#000"
+        elevation="1"
+        rounded
+        shaped
+        width="100%"
+        class="sheetthanks"
+      >
+        <h5 class="thanks">
+          POC started in 2006 and has been organized by Korean hackers &
+          security experts. <br />POC is a conference created by the best
+          speakers. Because of them, POC has become best conference and we
+          believe POC will continue to go further. On the 15th Anniversary of
+          POC Conference, we express our gratitude to the speakers who have
+          joined us.
+        </h5>
+      </v-sheet>
     </div>
+    <div class="lds-facebook" v-if="loading">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <v-container>
+      <v-row>
+        <v-col cols="6" md="3" v-for="n in pocyears" :key="n" class="yearscard">
+
+            <p class="yearlogo">{{n}}</p>
+          
+          <v-card elevation="16" max-width="300">
+            <v-virtual-scroll
+              :items="sortSpeakers(checkYear(n))"
+              height="300"
+              item-height="50"
+              class="yearsinside"
+              color="dark"
+            >
+              <template v-slot="{ item, index }">
+                <v-list-item :key="index">
+                  <v-list-item-action>
+                    <v-list-item-avatar>
+                      <v-img :src="setPhoto(item.name)"></v-img>
+                    </v-list-item-avatar>
+                  </v-list-item-action>
+
+                  <v-list-item-content>
+                    <v-list-item-title class="yearstext">
+                      {{ item.name }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
+            </v-virtual-scroll>
+          </v-card>
+        </v-col>
+</v-row
+      ></v-container
+    >
   </v-container>
 </template>
 
@@ -59,7 +73,8 @@ export default {
       speakersInfo: [],
       speakers: [],
       index: null,
-      loading: false
+      loading: false,
+      pocyears: [2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006 ]
     }
   },
   created() {
@@ -130,12 +145,62 @@ export default {
     checkSpeech(name) {
       let res = this.speakersInfo.filter(it => it["name"] == name)
       return res
+    },
+    checkYear(year) {
+      let res = this.speakersInfo.filter(it => it["year"] == year)
+      return res
+    },
+    sortSpeakers(res) {
+      res.sort((a, b) => {
+        return a.name.toUpperCase() < b.name.toUpperCase()
+          ? -1
+          : a.name.toUpperCase() > b.name.toUpperCase()
+          ? 1
+          : 0
+      })
+      return res
     }
   }
 }
 </script>
 
 <style>
+body {
+  color: #bdc3c7;
+}
+.yearscard {
+  color: #bdc3c7;
+  text-align: left;
+  width: 100%;
+  padding: 30px 40px 30px 40px;
+}
+.yearsinside {
+  background-color: black;
+  color: #bdc3c7;
+  text-align: left;
+}
+.yearstext {
+  color: #bdc3c7;
+  font-size: 0.9em;
+  padding: 10px;
+}
+.yearlogo {
+  background-color: transparent;
+  color: #bdc3c7;
+  font-size: 2em;
+  font-family: 'Sansita Swashed', cursive;
+  padding: 0 0 -10px 0;
+}
+.sheetthanks {
+  margin: -30px 10px 20px 10px;
+  padding: 10px 10px;
+}
+.thanks {
+  color: #bdc3c7;
+  font-size: 15px;
+  padding: 30px 20px;
+  text-align: justify;
+}
 .lds-facebook {
   display: inline-block;
   position: absolute;
